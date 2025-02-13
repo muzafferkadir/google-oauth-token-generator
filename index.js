@@ -3,7 +3,6 @@
 const express = require('express');
 const path = require('path');
 const open = require('open');
-const fs = require('fs');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -18,19 +17,8 @@ if (isNaN(port) || port < 0 || port > 65535) {
 
 const app = express();
 
-// Serve static files
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Create public directory if it doesn't exist
-if (!fs.existsSync(path.join(__dirname, 'public'))) {
-    fs.mkdirSync(path.join(__dirname, 'public'));
-}
-
-// Move index.html to public directory
-const htmlContent = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
-fs.writeFileSync(path.join(__dirname, 'public', 'index.html'), htmlContent);
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Start server
 app.listen(port, () => {

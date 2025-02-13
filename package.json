@@ -1,6 +1,6 @@
 {
   "name": "google-oauth-token-generator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple web-based tool to generate Google OAuth access tokens",
   "main": "index.js",
   "bin": {
@@ -11,8 +11,7 @@
   },
   "files": [
     "index.js",
-    "public",
-    "index.html"
+    "public"
   ],
   "keywords": [
     "google",
