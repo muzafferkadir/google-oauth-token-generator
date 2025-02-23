@@ -21,6 +21,7 @@
         }
         .input-group {
             margin-bottom: 15px;
+            max-width: 500px;
         }
         input[type="text"] {
             width: 100%;
@@ -28,6 +29,10 @@
             margin-top: 5px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.5;
+            height: 36px;
+            box-sizing: border-box;
         }
         button {
             background-color: #4285f4;
@@ -105,6 +110,69 @@
             white-space: pre-wrap;
             word-break: break-all;
         }
+        .password-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            max-width: 500px;
+        }
+        .password-input-container input[type="password"],
+        .password-input-container input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            font-size: 14px;
+            line-height: 1.5;
+            height: 36px;
+            box-sizing: border-box;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-top: 2px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+            width: 30px;
+            height: 30px;
+        }
+        .toggle-password:hover {
+            background: none;
+            color: #4285f4;
+        }
+        .toggle-password svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        .eye-icon {
+            font-size: 16px;
+            line-height: 1;
+        }
+        input[type="text"][list] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+        }
+        input[type="text"][list]:focus {
+            outline: none;
+            border-color: #4285f4;
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -139,6 +207,7 @@
                     <li>Application type: Select "Web application"</li>
                     <li>Authorized JavaScript origins: <code id="jsOrigin">Loading...</code></li>
                     <li>Authorized redirect URIs: <code id="redirectUriExample">Loading...</code></li>
+                    <li>After creating, save both the Client ID and Client Secret - you'll need both</li>
                 </ul>
             </li>
             <li>
@@ -188,8 +257,42 @@
         </div>
 
         <div class="input-group">
+            <label for="clientSecret">Client Secret:</label>
+            <div class="password-input-container">
+                <input type="password" id="clientSecret" placeholder="Enter your Google Client Secret">
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
+                    <svg class="eye-show" viewBox="0 0 24 24">
+                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                    </svg>
+                    <svg class="eye-hide" viewBox="0 0 24 24" style="display: none;">
+                        <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="input-group">
             <label for="scope">Scope:</label>
-            <input type="text" id="scope" value="https://www.googleapis.com/auth/userinfo.profile" placeholder="Enter the required scope">
+            <input type="text" 
+                   id="scope" 
+                   list="scopeList"
+                   placeholder="Enter or select the required scope">
+            <datalist id="scopeList">
+                <option value="https://www.googleapis.com/auth/userinfo.profile">User Profile Information</option>
+                <option value="https://www.googleapis.com/auth/userinfo.email">User Email Information</option>
+                <option value="https://www.googleapis.com/auth/calendar">Google Calendar Access</option>
+                <option value="https://www.googleapis.com/auth/drive">Google Drive Full Access</option>
+                <option value="https://www.googleapis.com/auth/gmail.readonly">Gmail Read-only Access</option>
+                <option value="https://www.googleapis.com/auth/cloud-platform">Google Cloud Platform Full Access</option>
+                <option value="https://www.googleapis.com/auth/cloud-platform.read-only">Google Cloud Platform Read-only Access</option>
+                <option value="https://www.googleapis.com/auth/youtube">YouTube Account Management</option>
+                <option value="https://www.googleapis.com/auth/youtube.readonly">YouTube Read-only Access</option>
+                <option value="https://www.googleapis.com/auth/youtube.upload">YouTube Video Management</option>
+                <option value="https://www.googleapis.com/auth/yt-analytics.readonly">YouTube Analytics Access</option>
+                <option value="https://www.googleapis.com/auth/youtube.force-ssl">YouTube Force SSL Access</option>
+                <option value="https://www.googleapis.com/auth/admob.readonly">AdMob Read-only Access</option>
+                <option value="https://www.googleapis.com/auth/admob.report">AdMob Reporting Access</option>
+            </datalist>
         </div>
 
         <button onclick="initiateOAuth()">Get Access Token</button>
@@ -198,6 +301,11 @@
             <div class="token-container">
                 <h3>Access Token: <button onclick="copyToken()" class="copy-btn">Copy</button></h3>
                 <div id="accessToken" class="token-text"></div>
+            </div>
+            
+            <div class="token-container">
+                <h3>Refresh Token: <button onclick="copyRefreshToken()" class="copy-btn">Copy</button></h3>
+                <div id="refreshToken" class="token-text"></div>
             </div>
             
             <div class="token-container">
@@ -227,6 +335,7 @@
         
         function initiateOAuth() {
             const clientId = document.getElementById('clientId').value;
+            const clientSecret = document.getElementById('clientSecret').value;
             const scope = document.getElementById('scope').value;
             
             if (!clientId) {
@@ -234,10 +343,16 @@
                 return;
             }
 
+            // Store credentials in the state parameter
+            const state = btoa(JSON.stringify({ clientId, clientSecret }));
+
             const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?
                 client_id=${encodeURIComponent(clientId)}&
                 redirect_uri=${encodeURIComponent(redirectUri)}&
-                response_type=token&
+                response_type=code&
+                access_type=offline&
+                prompt=consent&
+                state=${encodeURIComponent(state)}&
                 scope=${encodeURIComponent(scope)}&
                 include_granted_scopes=true`;
 
@@ -259,6 +374,11 @@
             copyToClipboard(token);
         }
 
+        function copyRefreshToken() {
+            const token = document.getElementById('refreshToken').textContent;
+            copyToClipboard(token);
+        }
+
         function copyTokenInfo() {
             const info = document.getElementById('tokenInfo').textContent;
             copyToClipboard(info);
@@ -269,28 +389,73 @@
             // Display current URL
             updateUrls();
             
-            const hash = window.location.hash;
-            if (hash) {
-                const params = new URLSearchParams(hash.substring(1));
-                const accessToken = params.get('access_token');
-                
-                if (accessToken) {
-                    document.getElementById('result').classList.remove('hidden');
-                    document.getElementById('accessToken').textContent = accessToken;
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
+            
+            if (code && state) {
+                try {
+                    // Retrieve credentials from state parameter
+                    const credentials = JSON.parse(atob(state));
+                    const clientId = credentials.clientId;
+                    const clientSecret = credentials.clientSecret;
                     
-                    // Fetch token info
-                    fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${accessToken}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('tokenInfo').textContent = JSON.stringify(data, null, 2);
-                        })
-                        .catch(error => {
-                            console.error('Error fetching token info:', error);
-                            document.getElementById('tokenInfo').textContent = 'Error fetching token info';
-                        });
+                    const tokenEndpoint = 'https://oauth2.googleapis.com/token';
+                    
+                    const tokenRequest = {
+                        code: code,
+                        client_id: clientId,
+                        client_secret: clientSecret,
+                        redirect_uri: redirectUri,
+                        grant_type: 'authorization_code'
+                    };
+
+                    fetch(tokenEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(tokenRequest)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('result').classList.remove('hidden');
+                        document.getElementById('accessToken').textContent = data.access_token;
+                        document.getElementById('refreshToken').textContent = data.refresh_token || 'No refresh token provided';
+                        
+                        // Fetch token info
+                        return fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${data.access_token}`);
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('tokenInfo').textContent = JSON.stringify(data, null, 2);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error exchanging code for tokens. Check the console for details.');
+                    });
+                } catch (error) {
+                    console.error('Error parsing state:', error);
+                    alert('Error retrieving credentials. Please try again.');
                 }
             }
         };
+
+        function togglePasswordVisibility() {
+            const input = document.getElementById('clientSecret');
+            const showIcon = document.querySelector('.eye-show');
+            const hideIcon = document.querySelector('.eye-hide');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                showIcon.style.display = 'none';
+                hideIcon.style.display = 'block';
+            } else {
+                input.type = 'password';
+                showIcon.style.display = 'block';
+                hideIcon.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html> 
