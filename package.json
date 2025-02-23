@@ -1,7 +1,7 @@
 {
   "name": "google-oauth-token-generator",
-  "version": "1.0.3",
-  "description": "A simple web-based tool to generate Google OAuth access tokens",
+  "version": "1.0.4",
+  "description": "A simple web-based tool to generate Google OAuth access tokens and refresh tokens",
   "main": "index.js",
   "bin": "./index.js",
   "scripts": {
@@ -17,8 +17,10 @@
     "token",
     "generator",
     "access-token",
+    "refresh-token",
     "google-oauth",
-    "authentication"
+    "authentication",
+    "oauth2"
   ],
   "author": "Muzaffer Kadir YILMAZ",
   "license": "MIT",
@@ -33,5 +35,8 @@
   "bugs": {
     "url": "https://github.com/muzafferkadir/google-oauth-token-generator/issues"
   },
-  "homepage": "https://github.com/muzafferkadir/google-oauth-token-generator#readme"
+  "homepage": "https://github.com/muzafferkadir/google-oauth-token-generator#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  }
 }
